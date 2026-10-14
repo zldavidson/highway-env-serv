@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "highway-contracts"
+version = "0.1.0"
+description = "Incremental public procurement PDF crawler and local full-text index"
+requires-python = ">=3.11"
+dependencies = ["pypdf==6.10.0"]
+
+[project.scripts]
+highway-contracts = "highway_contracts.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["highway_contracts*"]
