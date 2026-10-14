@@ -44,6 +44,21 @@ Live FDOT smoke check fetched public HTML and discovered an attachment, but the 
 
 ## Data
 
+Source adapters can use the dataclasses in `highway_contracts.models`: `Evidence`,
+`Attachment`, `Opportunity`, `Diagnostic`, and `DiscoveryBatch`. Their `to_dict()`
+and `to_json()` methods serialize nested records with string enum values. Timestamps
+are ISO 8601; ambiguous deadlines stay in `deadline_raw` with `deadline_at` and
+`deadline_timezone` null. Adapters must retain known offsets and redact credentials,
+cookies, and sensitive response fields before creating evidence.
+
+Use authoritative notice IDs. When unavailable, `detail_url_identity()` returns a
+normalized detail URL and a diagnostic that must be included in the batch. Titles
+are never identity keys. Diagnostic codes distinguish `authentication_required`,
+`blocked`, `parser_error`, `transport_error`, `verified_empty`, `truncated`, and
+`unsupported`. `DiscoveryBatch.verified_empty` requires a complete empty batch
+without blocking or parser diagnostics. The existing PDF crawler report remains
+separate; it does not yet produce opportunity discovery batches.
+
 - data/pdfs/: original content-addressed PDFs.
 - data/crawler.sqlite: cached responses, document versions, extracted pages and current-version pointers.
 - data/runs/: timestamped JSON reports.
